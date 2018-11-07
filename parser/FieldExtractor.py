@@ -52,18 +52,22 @@ class FieldExtractor:
 
                 for row_num in range(xl_sheet.nrows):
                     row_value = xl_sheet.row_values(row_num)
+
                     for col_num, cell in enumerate(row_value):
 
-                        if cell == field['field']:
+                        if type(cell) is str:
+                            if cell.lower() == field['field'].lower():
 
-                            if 'offset' in field:
-                                results[field['field']] = xl_sheet.cell(row_num + FieldExtractor.offset[field['offset']][0],
-                                                                        col_num + FieldExtractor.offset[field['offset']][1]).value
-                            else:
-                                results[field['field']] = xl_sheet.cell(
-                                    row_num,
-                                    col_num + 1).value
+                                if 'offset' in field:
+                                    results[field['field']] = xl_sheet.cell(row_num + FieldExtractor.offset[field['offset']][0],
+                                                                            col_num + FieldExtractor.offset[field['offset']][1]).value
+                                else:
+                                    results[field['field']] = xl_sheet.cell(row_num,
+                                                                            col_num + 1).value
 
+                                break
+                if field['field'] not in results:
+                    results[field['field']] = None
 
 
         return results

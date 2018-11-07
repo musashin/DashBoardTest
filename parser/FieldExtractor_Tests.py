@@ -2,6 +2,8 @@ import unittest
 from . import FieldExtractor
 
 
+
+
 class FieldExtractorNormal(unittest.TestCase):
     """
     Test in normal conditions
@@ -22,7 +24,10 @@ class FieldExtractorNormal(unittest.TestCase):
                                                                     'offset': FieldExtractor.FieldOffset.RIGHT},
                                                         'left': {'sheet': 'tata',
                                                                 'field': 'left',
-                                                                'offset': FieldExtractor.FieldOffset.LEFT}
+                                                                'offset': FieldExtractor.FieldOffset.LEFT},
+                                                        'Not found': {'sheet': 'toto',
+                                                                   'field': 'nothere',
+                                                                   'offset': FieldExtractor.FieldOffset.BOTTOM},
                                                         })
 
     def test_default_field_location(self):
@@ -39,6 +44,7 @@ class FieldExtractorNormal(unittest.TestCase):
     def test_bottom_field_location(self):
             result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
 
+            print(result)
             self.assertEqual(result['bottom'], 12)
 
     def test_right_field_location(self):
@@ -50,6 +56,11 @@ class FieldExtractorNormal(unittest.TestCase):
             result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
 
             self.assertEqual(result['left'], 56)
+
+    def test_notfound_field(self):
+        result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
+
+        self.assertEqual(result['nothere'], None)
 
 
 if __name__ == '__main__':
