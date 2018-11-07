@@ -2,8 +2,6 @@ import unittest
 from . import FieldExtractor
 
 
-
-
 class FieldExtractorNormal(unittest.TestCase):
     """
     Test in normal conditions

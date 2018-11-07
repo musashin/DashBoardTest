@@ -59,8 +59,10 @@ class FieldExtractor:
                             if cell.lower() == field['field'].lower():
 
                                 if 'offset' in field:
-                                    results[field['field']] = xl_sheet.cell(row_num + FieldExtractor.offset[field['offset']][0],
-                                                                            col_num + FieldExtractor.offset[field['offset']][1]).value
+                                    results[field['field']] = xl_sheet.cell(row_num +
+                                                                            FieldExtractor.offset[field['offset']][0],
+                                                                            col_num +
+                                                                            FieldExtractor.offset[field['offset']][1]).value
                                 else:
                                     results[field['field']] = xl_sheet.cell(row_num,
                                                                             col_num + 1).value
