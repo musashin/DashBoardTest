@@ -1,6 +1,6 @@
 from enum import Enum
 import xlrd
-
+import datetime
 
 class FieldOffset(Enum):
     """
@@ -11,6 +11,14 @@ class FieldOffset(Enum):
     TOP = 1
     LEFT = 2
     BOTTOM = 3
+
+
+class FieldType(Enum):
+        """
+        A definition of the possible cell type
+        """
+        DATE = 0
+
 
 
 class FieldExtractor:
@@ -44,7 +52,7 @@ class FieldExtractor:
 
         results = dict()
 
-        with xlrd.open_workbook(file_path) as workbook:
+        with xlrd.open_workbook(filename=file_path) as workbook:
 
             for key, field in self.fieldDefinition.items():
 
@@ -59,15 +67,25 @@ class FieldExtractor:
                             if cell.lower() == field['field'].lower():
 
                                 if 'offset' in field:
-                                    results[field['field']] = xl_sheet.cell(row_num +
-                                                                            FieldExtractor.offset[field['offset']][0],
-                                                                            col_num +
-                                                                            FieldExtractor.offset[field['offset']][1]).value
+                                    cell = xl_sheet.cell(row_num +
+                                                        FieldExtractor.offset[field['offset']][0],
+                                                        col_num +
+                                                        FieldExtractor.offset[field['offset']][1])
+                                    results[field['field']] = cell.value
+
                                 else:
-                                    results[field['field']] = xl_sheet.cell(row_num,
-                                                                            col_num + 1).value
+                                    cell = xl_sheet.cell(row_num,
+                                                         col_num + 1)
+                                    results[field['field']] = cell.value
+
+                                if 'type' in field:
+                                    if field['type'] == FieldType.DATE:
+                                        results[field['field']] = datetime.datetime(*xlrd.xldate_as_tuple(results[field['field']], workbook.datemode))
+
 
                                 break
+
+
                 if field['field'] not in results:
                     results[field['field']] = None
 

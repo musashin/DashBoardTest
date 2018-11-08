@@ -1,4 +1,5 @@
 import unittest
+import datetime
 from . import FieldExtractor
 
 
@@ -26,6 +27,10 @@ class FieldExtractorNormal(unittest.TestCase):
                                                         'Not found': {'sheet': 'toto',
                                                                    'field': 'nothere',
                                                                    'offset': FieldExtractor.FieldOffset.BOTTOM},
+                                                        'Date': {'sheet': 'toto',
+                                                                 'field': 'date',
+                                                                  'type': FieldExtractor.FieldType.DATE
+                                                                  }
                                                         })
 
     def test_default_field_location(self):
@@ -59,6 +64,11 @@ class FieldExtractorNormal(unittest.TestCase):
         result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
 
         self.assertEqual(result['nothere'], None)
+
+    def test_date_field(self):
+        result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
+
+        self.assertEqual(result['date'], datetime.datetime(2018, 1, 4, 0, 0))
 
 
 if __name__ == '__main__':
