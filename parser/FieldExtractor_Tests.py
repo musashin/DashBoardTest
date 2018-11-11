@@ -1,6 +1,7 @@
 import unittest
 import datetime
 from . import FieldExtractor
+import numpy as np
 
 
 class FieldExtractorNormal(unittest.TestCase):
@@ -63,7 +64,7 @@ class FieldExtractorNormal(unittest.TestCase):
     def test_notfound_field(self):
         result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
 
-        self.assertEqual(result['nothere'], None)
+        self.assertTrue(np.isnan(result['nothere']))
 
     def test_date_field(self):
         result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')

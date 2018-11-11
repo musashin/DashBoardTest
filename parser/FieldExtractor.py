@@ -1,6 +1,7 @@
 from enum import Enum
 import xlrd
 import datetime
+import numpy as np
 
 class FieldOffset(Enum):
     """
@@ -18,7 +19,6 @@ class FieldType(Enum):
         A definition of the possible cell type
         """
         DATE = 0
-
 
 
 class FieldExtractor:
@@ -87,7 +87,7 @@ class FieldExtractor:
 
 
                 if field['field'] not in results:
-                    results[field['field']] = None
+                    results[field['field']] =  np.nan
 
 
         return results
