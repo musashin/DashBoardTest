@@ -1,5 +1,5 @@
 from . import FieldExtractor
-
+import datetime
 
 class Invoice(FieldExtractor.FieldExtractor):
     """
@@ -11,6 +11,13 @@ class Invoice(FieldExtractor.FieldExtractor):
         FieldExtractor.FieldExtractor.__init__(self, {'CPI': {  'sheet': 'details',
                                                                 'field': 'cpi'},
                                                       'date': {'sheet': 'details',
-                                                                'field': 'date'}
+                                                                'field': 'date',
+                                                                'type': FieldExtractor.FieldType.DATE}
                                                 })
 
+    def extract(self, file_path):
+        res = super(Invoice, self).extract(file_path)
+
+        #todo, add self computed fields
+
+        return res
