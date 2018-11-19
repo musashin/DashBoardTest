@@ -10,7 +10,7 @@ class ProjectDataTests(unittest.TestCase):
     """
 
     def setUp(self):
-        self.project = ProjectData.CustomerProject('test')
+        self.project = ProjectData.CustomerProject('customer name', 'project name')
         self.project.load_data(r'./parser/test_data/invoices')
 
     def test_loaded_project_field(self):
