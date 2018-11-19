@@ -23,7 +23,6 @@ class CustomerProject:
         """
 
         try:
-            print(self.data)
             if self.data['cpi'].iloc[-1] < self.low_cpi and self.is_active_project():
                 self.warning_list.append("Customer {!s} Project {!s} has a low cpi {!s}".format(self.customer_name,
                                                                                                 self.project_name,
@@ -63,9 +62,8 @@ class CustomerProject:
         self.data.set_index('date', inplace=True)
         self.data.index = self.data.index.map(pd.DatetimeIndex.to_pydatetime)
         self.data.sort_index(inplace=True)
-        #print(self.data)
         self.__analyse()
-        print(self.warning_list)
+
 
     def get_value(self, date, field):
         """

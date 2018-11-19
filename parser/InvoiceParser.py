@@ -32,7 +32,7 @@ class Invoice(FieldExtractor.FieldExtractor):
     def extract(self, file_path):
         res = super(Invoice, self).extract(file_path)
 
-        for prod  in self.data_producers:
+        for prod in self.data_producers:
             res = prod(res)
 
         return res
