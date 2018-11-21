@@ -7,6 +7,18 @@ class Invoice(FieldExtractor.FieldExtractor):
     It simply uses FieldExtractor Extract data from an Excel invoice
     """
 
+    config = {'CPI': {  'sheet': 'details',
+                        'field': 'cpi'},
+              'value': {'sheet': 'details',
+                        'field': 'value'},
+               'budget': {'sheet': 'details',
+                          'field': 'budget'},
+                'hours': {'sheet': 'details',
+                          'field': 'hours'},
+               'date': {'sheet': 'details',
+                         'field': 'date',
+                          'type': FieldExtractor.FieldType.DATE}}
+
     @staticmethod
     def add_engineers(result):
 
@@ -14,18 +26,8 @@ class Invoice(FieldExtractor.FieldExtractor):
         return result
 
     def __init__(self):
-        FieldExtractor.FieldExtractor.__init__(self, {'CPI': {  'sheet': 'details',
-                                                                'field': 'cpi'},
-                                                      'value': {'sheet': 'details',
-                                                              'field': 'value'},
-                                                      'budget': {'sheet': 'details',
-                                                              'field': 'budget'},
-                                                      'hours': {'sheet': 'details',
-                                                                 'field': 'hours'},
-                                                      'date': {'sheet': 'details',
-                                                                'field': 'date',
-                                                                'type': FieldExtractor.FieldType.DATE}
-                                                })
+        FieldExtractor.FieldExtractor.__init__(self,
+                                               Invoice.config)
 
         self.data_producers = [Invoice.add_engineers]
 
@@ -36,3 +38,11 @@ class Invoice(FieldExtractor.FieldExtractor):
             res = prod(res)
 
         return res
+
+    @staticmethod
+    def get_colums():
+        x = list(Invoice.config.keys())
+        x.append('bodies')
+        return x
+
+

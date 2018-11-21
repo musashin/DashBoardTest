@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from . import ProjectData
+from . import InvoiceParser
 import logging
 
 
@@ -10,6 +11,8 @@ class CustomerData:
         self.inactive_delay = inactive_delay
         self.low_cpi = low_cpi
         self.projects = dict()
+        self.data = pd.DataFrame(columns = InvoiceParser.Invoice.get_colums())
+
 
     def load_data(self, customer_path):
 
@@ -18,4 +21,7 @@ class CustomerData:
 
                 self.projects[custdir] = ProjectData.CustomerProject(self.inactive_delay, self.low_cpi)
                 self.projects[custdir].load_data(os.path.join(customer_path, custdir))
+
+                print(custdir)
+                print(self.projects[custdir].data)
                 #TODO handle eceptions
