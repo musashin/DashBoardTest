@@ -7,7 +7,7 @@ class Invoice(FieldExtractor.FieldExtractor):
     It simply uses FieldExtractor Extract data from an Excel invoice
     """
 
-    config = {'CPI': {  'sheet': 'details',
+    config = {'cpi': {  'sheet': 'details',
                         'field': 'cpi'},
               'value': {'sheet': 'details',
                         'field': 'value'},
