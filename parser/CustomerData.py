@@ -43,28 +43,37 @@ class CustomerData:
     def __add_project_data(self, project_data, customer_index):
 
         index = 0
+        prev_date = None
 
-        for time, invoice in project_data.data.iterrows():
+        for date, invoice in project_data.data.iterrows():
 
-            if project_data.is_active_project(time):
+            if project_data.is_active_project(date):
 
-                if index == len(project_data.data)-1:
+                #TODO detedt when there is a gap between the project current time stamp and the other
+
+                if date in self.data.index: #adding invoice number with current invoice data
+                    for name, value in invoice.iteritems():
+                        if name in CustomerData.column_to_average:
+                            self.data.loc[date][name] = (self.data.loc[date][name] + value)/(customer_index + 1)
+                        else:
+                            self.data.loc[date][name] += value
+                else: #inserting a new date
+
+                    self.data.loc[date] = invoice
+                    current_index = self.data.index.get_loc(date)
+                    self.data.loc[date] = self.data.loc[date] + self.data.iloc[current_index-1] #todo, normalize CPI
+
+                if index == len(project_data.data) - 1: #if there are customer financial data AFTER the last date of the project
                     print('----------- last row----------')
-                    #go through all the remaning row in the ppoject...and add!
-                else:
-                    if time in self.data.index:
-                        for name, value in invoice.iteritems():
-                            if name in CustomerData.column_to_average:
-                                self.data.loc[time][name] = (self.data.loc[time][name] + value)/(customer_index + 1)
-                            else:
-                                self.data.loc[time][name] += value
-                    else:
-                        self.data.loc[time] = invoice
+                    # go through all the remaning row in the ppoject...and add!
+                    print(self.data.loc[date+ pd.Timedelta(1, unit='d'): date+self.inactive_delay])
+
+
                 #todo, consider case where one project starts before the other
-                #todo: consider case where one project finish after the others
                 #todo: Consider case where project is missing invoice
 
-            index+=1
+            prev_date = date
+            index += 1
 
         self.data.drop('date', 1)
         self.data.sort_index(inplace=True)
