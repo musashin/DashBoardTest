@@ -27,12 +27,11 @@ def add_project_data(total_data, project_data, project_idx, column_to_average, i
 
         if is_active_project(project_data, inactive_delay, date):
 
-            # TODO detedt when there is a gap between the project current time stamp and the other
 
             if date in total_data.index:  # adding invoice number with current invoice data
                 for name, value in invoice.iteritems():
                     if name in column_to_average:
-                        total_data.loc[date][name] = (total_data.loc[date][name] + value ) /(project_idx + 1)
+                        total_data.loc[date][name] = (total_data.loc[date][name]*project_idx + value) / (project_idx + 1)
                     else:
                         total_data.loc[date][name] += value
             else:  # inserting a new date
@@ -47,10 +46,11 @@ def add_project_data(total_data, project_data, project_idx, column_to_average, i
                     print(total_data.loc[date+ pd.Timedelta(1, unit='d'): date + inactive_delay])
 
             # todo, consider case where one project starts before the other
-            # todo: Consider case where project is missing invoice
+            # todo: Consider case where project is missing invoices (week(s))
+            # todo: consider case where project ends before the other
 
         prev_date = date
         index += 1
 
-    #total_data.drop('date', 1)
     total_data.sort_index(inplace=True)
+    total_data.sort_index(axis=1, inplace=True)
