@@ -20,6 +20,7 @@ def is_active_project(data, inactive_delay, date=pd.Timestamp.now()):
 def add_project_data(total_data, project_data, project_idx, column_to_average, inactive_delay=pd.Timedelta(3, unit='M')):
 
     index = 0
+    initial_total_data = total_data.copy()
     prev_date = None
 
     for date, invoice in project_data.iterrows():
@@ -36,8 +37,9 @@ def add_project_data(total_data, project_data, project_idx, column_to_average, i
             else:  # inserting a new date
 
 
-                if not total_data.empty and date > total_data.index[-1] and project_idx > 0:
-                    last_row = total_data.iloc[-1]
+                if not initial_total_data.empty and date > initial_total_data.index[-1] and project_idx > 0:
+                    last_row = initial_total_data.iloc[-1]
+                    total_data.loc[date] = invoice
 
                     for name, value in invoice.iteritems():
                         if name in column_to_average:
