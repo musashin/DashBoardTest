@@ -36,8 +36,8 @@ def add_project_data(total_data, project_data, project_idx, column_to_average, i
                         total_data.loc[date][name] += value
             else:  # inserting a new date
 
-
-                if not initial_total_data.empty and date > initial_total_data.index[-1] and project_idx > 0:
+                if not initial_total_data.empty and date > initial_total_data.index[-1] \
+                   and project_idx > 0 and date - initial_total_data.index[-1] < inactive_delay:
                     last_row = initial_total_data.iloc[-1]
                     total_data.loc[date] = invoice
 
@@ -51,22 +51,37 @@ def add_project_data(total_data, project_data, project_idx, column_to_average, i
                     total_data.loc[date] = invoice
 
 
-                #
-                #current_index = total_data.index.get_loc(date)
-                #total_data.loc[date] = total_data.loc[date] + total_data.iloc[current_index -1]  # todo, normalize CPI
-
-            # todo, consider case where one project starts before the other
             # todo: Consider case where project is missing invoices (week(s))
-            # todo: consider case where project ends before the other
+
 
         prev_date = date
         index += 1
 
-    if index == len(project_data) - 1:  # if there are customer financial data AFTER the last date of the project
+
+    total_data.sort_index(inplace=True)
+    total_data.sort_index(axis=1, inplace=True)
+
+    if not total_data.empty and index == len(project_data) and \
+            project_data.index[-1]<total_data.index[-1]:  # if there are customer financial data AFTER the last date of the project
+
+        #todo stop inactive delay
         print("last date")
+        total_data.index[index]
+
+        for i in range(index, len(total_data)):
+            print(i)
+            print(total_data.index[i])
+
+            if total_data.index[i] - project_data.index[-1] < inactive_delay:
+
+                last_row = project_data.iloc[-1]
+
+                for name, value in total_data.iloc[i].iteritems():
+                    if name in column_to_average:
+                        total_data.iloc[i][name] = (last_row[name] * project_idx + value) / (project_idx + 1)
+                    else:
+                        total_data.iloc[i][name] = value + last_row[name]
         #print('----------- last row----------')
         # go through all the remaning row in the ppoject...and add!
         #print(total_data.loc[date + pd.Timedelta(1, unit='d'): date + inactive_delay])
 
-    total_data.sort_index(inplace=True)
-    total_data.sort_index(axis=1, inplace=True)
