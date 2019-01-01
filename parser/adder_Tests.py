@@ -1,5 +1,5 @@
 import unittest
-from . import adder
+from parser import adder
 import pandas as pd
 from datetime import datetime
 

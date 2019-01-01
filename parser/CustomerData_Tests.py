@@ -1,5 +1,5 @@
 import unittest
-from . import CustomerData
+from parser import CustomerData
 import pandas as pd
 import numpy as np
 
@@ -25,8 +25,5 @@ class ProjectDataTests(unittest.TestCase):
                                                                   dtype = float)
 
         expected_result.sort_index(inplace=True, axis=1)
-
-        print(self.customer.data)
-        print(expected_result)
 
         self.assertTrue(self.customer.data.equals(expected_result))

@@ -1,5 +1,5 @@
 import unittest
-from . import ProjectData
+from parser import ProjectData
 import pandas as pd
 import numpy as np
 
@@ -11,7 +11,7 @@ class ProjectDataTests(unittest.TestCase):
 
     def setUp(self):
         self.project = ProjectData.CustomerProject('customer name', 'project name')
-        self.project.load_data(r'./parser/test_data/invoices')
+        self.project.load_data(r'./test_data/invoices')
 
     def test_loaded_project_field(self):
         self.assertEqual(self.project.get_value(pd.Timestamp('20180404 0:0:0'), 'cpi').item(), 10)

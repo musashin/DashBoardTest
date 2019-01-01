@@ -1,4 +1,4 @@
-from . import InvoiceParser
+from parser import InvoiceParser
 import os
 import pandas as pd
 import logging

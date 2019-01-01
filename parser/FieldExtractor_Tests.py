@@ -1,6 +1,6 @@
 import unittest
 import datetime
-from . import FieldExtractor
+from parser import FieldExtractor
 import numpy as np
 
 
@@ -36,38 +36,38 @@ class FieldExtractorNormal(unittest.TestCase):
 
     def test_default_field_location(self):
 
-        result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
+        result = self.extractor.extract(r'./test_data/sample1.xlsx')
 
         self.assertEqual(result['default'], 89)
 
     def test_top_field_location(self):
-            result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
+            result = self.extractor.extract(r'./test_data/sample1.xlsx')
 
             self.assertEqual(result['top'], 78)
 
     def test_bottom_field_location(self):
-            result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
+            result = self.extractor.extract(r'./test_data/sample1.xlsx')
 
             print(result)
             self.assertEqual(result['bottom'], 12)
 
     def test_right_field_location(self):
-        result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
+        result = self.extractor.extract(r'./test_data/sample1.xlsx')
 
         self.assertEqual(result['right'], 45)
 
     def test_left_field_location(self):
-            result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
+            result = self.extractor.extract(r'./test_data/sample1.xlsx')
 
             self.assertEqual(result['left'], 56)
 
     def test_notfound_field(self):
-        result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
+        result = self.extractor.extract(r'./test_data/sample1.xlsx')
 
         self.assertTrue(np.isnan(result['nothere']))
 
     def test_date_field(self):
-        result = self.extractor.extract(r'./parser/test_data/sample1.xlsx')
+        result = self.extractor.extract(r'./test_data/sample1.xlsx')
 
         self.assertEqual(result['date'], datetime.datetime(2018, 1, 4, 0, 0))
 

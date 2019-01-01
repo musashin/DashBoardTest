@@ -1,4 +1,4 @@
-from . import FieldExtractor
+from parser import FieldExtractor
 
 
 class Invoice(FieldExtractor.FieldExtractor):

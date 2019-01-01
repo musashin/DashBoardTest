@@ -1,9 +1,9 @@
 import os
 import pandas as pd
-from . import ProjectData
-from . import InvoiceParser
+from parser import ProjectData
+from parser import InvoiceParser
 import logging
-from . import adder
+from parser import adder
 
 
 class CustomerData:
