@@ -1,8 +1,4 @@
-import os
 import pandas as pd
-from . import ProjectData
-from . import InvoiceParser
-import logging
 
 
 def is_active_project(data, inactive_delay, date=pd.Timestamp.now()):
@@ -21,7 +17,6 @@ def add_project_data(total_data, project_data, project_idx, column_to_average, i
 
     index = 0
     initial_total_data = total_data.copy()
-    prev_date = None
 
     for date, invoice in project_data.iterrows():
 
@@ -50,16 +45,12 @@ def add_project_data(total_data, project_data, project_idx, column_to_average, i
                 else:
                     total_data.loc[date] = invoice
 
-
-            # todo: Consider case where project is missing invoices (week(s))
-
-
-        prev_date = date
+        prev_project_invoice = (date, invoice)
         index += 1
-
 
     total_data.sort_index(inplace=True)
     total_data.sort_index(axis=1, inplace=True)
+    total_data.reindex(pd.date_range(total_data.index.min(), total_data.index.max(), freq='W'))
 
     if not total_data.empty and index == len(project_data) and \
             project_data.index[-1]<total_data.index[-1]:  # if there are customer financial data AFTER the last date of the project
