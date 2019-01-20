@@ -6,6 +6,7 @@ class Invoice(FieldExtractor.FieldExtractor):
     This class is responsible to import data from a customer invoice
     It simply uses FieldExtractor Extract data from an Excel invoice
     """
+    #todo different fields for unit tests
 
     config = {'cpi': {  'sheet': 'details',
                         'field': 'cpi'},

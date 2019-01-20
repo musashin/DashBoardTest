@@ -15,6 +15,9 @@ def is_active_project(data, inactive_delay, date=pd.Timestamp.now()):
 
 def add_project_data(total_data, project_data, project_idx, column_to_average, inactive_delay=pd.Timedelta(3, unit='M')):
 
+    #todo weighted average
+    #todo simplify
+
     index = 0
     initial_total_data = total_data.copy()
 
